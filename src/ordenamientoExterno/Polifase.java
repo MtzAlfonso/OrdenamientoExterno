@@ -15,8 +15,7 @@ import java.util.*;
 public class Polifase {
 
     /**
-     * Archivo original. Se asigna a un archivo distinto a <code>f0</code> para
-     * poder guardar los datos desordenados.
+     * Archivo original. Archivo del cual se leen los datos desordenados.
      */
     private File original;
     /**
@@ -47,12 +46,15 @@ public class Polifase {
     /**
      * Tamaño de los bloques en los que se divide el archivo original.
      */
-    private int m;
+    private int tamBloque;
     /**
      * Variable para controlar el tipo de ordenamiento.
      */
     private int ord;
-    private int pasada, contador;
+    /**
+     * LLeva el conteo de cuantas veces se ha repetido la fase 2.
+     */
+    private int pasada;
 
     /**
      * Constructor de la clase Polifase.
@@ -60,25 +62,25 @@ public class Polifase {
      * @param ruta
      */
     public Polifase(String ruta) {
-        m = 50;
+        tamBloque = 50;
         pasada = 0;
         as = new MergeSortAs();
         des = new MergeSortDes();
         op = new OpArchivos();
-        contador = 0;
         ord = 0;
 
         original = new File(ruta);
         directorio = new File("./archivos/polifase/aux");
-        
+
         f0 = new File("./archivos/polifase/aux/f0.txt");
         f1 = new File("./archivos/polifase/aux/f1.txt");
         f2 = new File("./archivos/polifase/aux/f2.txt");
         f3 = new File("./archivos/polifase/aux/f3.txt");
-        
+
         try {
             pw = new PrintWriter(new File("./archivos/polifase/registro.txt"));
-        } catch (FileNotFoundException ex) {}
+        } catch (FileNotFoundException ex) {
+        }
 
         if (f0.exists()) {
             f0.delete();
@@ -99,14 +101,16 @@ public class Polifase {
      */
     public void iniciar() {
         fase1();
-        while (op.leer(f1) != null && op.leer(f2) != null || op.leer(f0) != null && op.leer(f3) != null) {
+        while (op.leer(f1) != null && op.leer(f2) != null
+                || op.leer(f0) != null && op.leer(f3) != null) {
             fase2();
         }
-        if(f0.length() == 0)
+        if (f0.length() == 0) {
             System.out.println("\nEl archivo quedó ordenado en f1");
-        else
+        } else {
             System.out.println("\nEl archivo quedó ordenado en f0");
-        
+        }
+
         pw.println("\nArchivo ordenado");
         pw.close();
     }
@@ -126,15 +130,16 @@ public class Polifase {
     private void fase1() {
         List<String> elementos;
         List<Float> sub;
+        int contador = 0;
         directorio.mkdir();
         //System.out.println("Fase 1...");
         pw.println("Fase 1...");
         elementos = op.dividir(op.leer(original), ",");
 
         while (!elementos.isEmpty()) {
-            if (elementos.size() > m) {
-                sub = op.sToF(elementos.subList(0, m));
-                for (int j = 0; j < m; j++) {
+            if (elementos.size() > tamBloque) {
+                sub = op.sToF(elementos.subList(0, tamBloque));
+                for (int j = 0; j < tamBloque; j++) {
                     elementos.remove(0);
                 }
             } else {
@@ -199,7 +204,7 @@ public class Polifase {
         List<Float> aux1, aux2;
 
         int i, j, k, s1, s2;
-        contador = 0;
+        int contador = 0;
 
         for (i = 0; i < archivo2.size(); i++) {
             j = 0;
@@ -282,7 +287,7 @@ public class Polifase {
         List<Float> aux1, aux2;
 
         int i, j, k, s1, s2;
-        contador = 0;
+        int contador = 0;
 
         for (i = 0; i < archivo2.size(); i++) {
             j = 0;
