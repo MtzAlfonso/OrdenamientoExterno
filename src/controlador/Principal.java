@@ -1,4 +1,4 @@
-package proyecto;
+package controlador;
 
 import java.util.*;
 import java.io.*;

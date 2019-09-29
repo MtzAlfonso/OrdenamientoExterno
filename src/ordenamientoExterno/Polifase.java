@@ -12,15 +12,37 @@ import java.util.*;
  * @since 28/septiembre/2019
  */
 public class Polifase {
-    File original;
-    File f0;
-    File f1;
-    File f2;
-    File f3;
-    MergeSortAs as;
-    MergeSortDes des;
-    OpArchivos op;
-    int m, pasada, contador, ord;
+    /**
+     * Archivo original.
+     * Se asigna a un archivo distinto a <code>f0</code> para poder guardar los datos desordenados.
+     */
+    private File original;
+    /**
+     * Archivo auxiliar.
+     * Se utiliza para guardar los bloques de datos derivados del archivo original.
+     */
+    private File f0,f1,f2,f3;
+    /**
+     * Algoritmo de ordenamiento interno ascendente.
+     */
+    private MergeSortAs as;
+    /**
+     * Algoritmo de ordenamiento interno descendente.
+     */
+    private MergeSortDes des;
+    /**
+     * Objeto para la manipulación de archivos.
+     */
+    private OpArchivos op;
+    /**
+     * Tamaño de los bloques en los que se divide el archivo original.
+     */
+    private int m;
+    /**
+     * Variable para controlar el tipo de ordenamiento.
+     */
+    private int ord;
+    private int pasada, contador;
     
     /**
      * Constructor de la clase Polifase.
@@ -51,6 +73,9 @@ public class Polifase {
             f3.delete();
     }
     
+    /**
+     * Inicia el proceso del algoritmo de Polifase.
+     */
     public void iniciar(){
         fase1();
         while(op.leer(f1) != null && op.leer(f2) != null || op.leer(f0) != null && op.leer(f3) != null){
@@ -58,14 +83,18 @@ public class Polifase {
         }
     }
     
+    /**
+     * Asigna el valor a la variable ord. Ascendente o Descendente.
+     * @param ord Guarda un valor entero entre 1 y 2.
+     */
     public void setOrd(int ord){
         this.ord = ord;
     }
     
     /**
-     * Fase 1. Construcción y distribución de los arreglos ordenados.
+     * Construcción y distribución de los arreglos ordenados.
      */
-    void fase1(){
+    private void fase1(){
         List<String> elementos;
         List<Float> sub;
         System.out.println("Fase 1...");
@@ -73,12 +102,12 @@ public class Polifase {
             
         while(!elementos.isEmpty()){
             if(elementos.size() > m){
-                sub = sToF(elementos.subList(0, m));
+                sub = op.sToF(elementos.subList(0, m));
                 for(int j = 0 ; j < m ; j++)
                     elementos.remove(0);
             }
             else{
-                sub = sToF(elementos.subList(0, elementos.size()));
+                sub = op.sToF(elementos.subList(0, elementos.size()));
                 elementos.clear();
             }
             switch(ord){
@@ -95,17 +124,17 @@ public class Polifase {
             }
             System.out.println(sub);
             if(contador%2 == 0)
-                op.escribir(f1, fToS(sub));
+                op.escribir(f1, op.fToS(sub));
             else
-                op.escribir(f2, fToS(sub));
+                op.escribir(f2, op.fToS(sub));
             contador++;
         }
     }
     
     /**
-     * Fase 2. Intercalación de archivos.
+     * Intercalación de archivos.
      */
-    void fase2(){
+    private void fase2(){
         System.out.println("Fase 2...");
         //System.out.println(pasada%2);
         if(pasada % 2 == 0){
@@ -126,25 +155,7 @@ public class Polifase {
         pasada++;
     }
     
-    List<Float> sToF(List<String> listaS){
-        List<Float> listaF = new LinkedList<>();
-        for(String var: listaS)
-            listaF.add(Float.parseFloat(var));
-        return listaF;
-    }
-    
-    String fToS(List<Float> listaF){
-        String listaS = "";
-        for(Float var: listaF){
-            if(var != listaF.get(listaF.size()-1))
-                listaS = listaS + var.toString() + ",";
-            else
-                listaS = listaS + var.toString();
-        }
-        return listaS;
-    }
-    
-    void mezclaAs(File f1, File f2, File f0, File f3){
+    private void mezclaAs(File f1, File f2, File f0, File f3){
         boolean bandera = false;
         System.out.println("Mezcla...");
         List<String> archivo1 = op.dividir(op.leer(f1),"]");
@@ -159,8 +170,8 @@ public class Polifase {
             k = 0;
 
             List<Float> mezclada = new LinkedList<>();
-            aux1 = sToF(op.dividir(archivo1.get(i),","));
-            aux2 = sToF(op.dividir(archivo2.get(i),","));
+            aux1 = op.sToF(op.dividir(archivo1.get(i),","));
+            aux2 = op.sToF(op.dividir(archivo2.get(i),","));
 
             s1 = aux1.size();
             s2 = aux2.size();
@@ -209,24 +220,24 @@ public class Polifase {
             }
             System.out.println(mezclada);
             if(contador % 2 == 0){
-                op.escribir(f0, fToS(mezclada));
+                op.escribir(f0, op.fToS(mezclada));
                 bandera = true;
             }
             else{
-                op.escribir(f3, fToS(mezclada));
+                op.escribir(f3, op.fToS(mezclada));
                 bandera = false;
             }
             contador++;
         }
         if(archivo1.size() != archivo2.size()){
-            aux1 = sToF(op.dividir(archivo1.get(i),","));
+            aux1 = op.sToF(op.dividir(archivo1.get(i),","));
             if (!bandera)
-                op.escribir(f0, fToS(aux1));
+                op.escribir(f0, op.fToS(aux1));
             else
-                op.escribir(f3, fToS(aux1));
+                op.escribir(f3, op.fToS(aux1));
         }
     }
-    void mezclaDes(File f1, File f2, File f0, File f3){
+    private void mezclaDes(File f1, File f2, File f0, File f3){
         boolean bandera = false;
         System.out.println("Mezcla...");
         List<String> archivo1 = op.dividir(op.leer(f1),"]");
@@ -241,8 +252,8 @@ public class Polifase {
             k = 0;
 
             List<Float> mezclada = new LinkedList<>();
-            aux1 = sToF(op.dividir(archivo1.get(i),","));
-            aux2 = sToF(op.dividir(archivo2.get(i),","));
+            aux1 = op.sToF(op.dividir(archivo1.get(i),","));
+            aux2 = op.sToF(op.dividir(archivo2.get(i),","));
 
             s1 = aux1.size();
             s2 = aux2.size();
@@ -291,21 +302,21 @@ public class Polifase {
             }
             System.out.println(mezclada);
             if(contador % 2 == 0){
-                op.escribir(f0, fToS(mezclada));
+                op.escribir(f0, op.fToS(mezclada));
                 bandera = true;
             }
             else{
-                op.escribir(f3, fToS(mezclada));
+                op.escribir(f3, op.fToS(mezclada));
                 bandera = false;
             }
             contador++;
         }
         if(archivo1.size() != archivo2.size()){
-            aux1 = sToF(op.dividir(archivo1.get(i),","));
+            aux1 = op.sToF(op.dividir(archivo1.get(i),","));
             if (!bandera)
-                op.escribir(f0, fToS(aux1));
+                op.escribir(f0, op.fToS(aux1));
             else
-                op.escribir(f3, fToS(aux1));
+                op.escribir(f3, op.fToS(aux1));
         }
     }
 }
