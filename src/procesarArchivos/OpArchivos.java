@@ -45,7 +45,7 @@ public class OpArchivos {
             pw.print("");
             pw.close();
         } catch (IOException ex) {
-            System.out.println(ex);
+            //System.out.println(ex);
         }
     }
 
@@ -57,7 +57,7 @@ public class OpArchivos {
             linea = br.readLine();
             br.close();
         } catch (IOException ex) {
-            System.out.println(ex);
+            //System.out.println(ex);
         }
         return linea;
     }
@@ -69,7 +69,7 @@ public class OpArchivos {
             bw.write(cadena + "]");
             bw.close();
         } catch (IOException ex) {
-            System.out.println(ex);
+            //System.out.println(ex);
         }
     }
 }

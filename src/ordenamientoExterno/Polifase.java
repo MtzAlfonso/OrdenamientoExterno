@@ -9,7 +9,7 @@ import java.util.*;
  * Ordenamiento por polifase.
  *
  * @author José Alfonso Martínez Baeza
- * @version 3.0.1
+ * @version 3.0.2
  * @since 28/septiembre/2019
  */
 public class Polifase {
@@ -28,6 +28,14 @@ public class Polifase {
      * Algoritmo de ordenamiento interno ascendente.
      */
     private MergeSortAs as;
+    /**
+     * Guarda las iteraciones del algoritmo en un archivo de registro.
+     */
+    private PrintWriter pw;
+    /**
+     * Carpeta donde se guardan los archivos auxiliares y de prueba.
+     */
+    private File directorio;
     /**
      * Algoritmo de ordenamiento interno descendente.
      */
@@ -61,10 +69,16 @@ public class Polifase {
         ord = 0;
 
         original = new File(ruta);
-        f0 = new File("./archivos/auxiliares/f0.txt");
-        f1 = new File("./archivos/auxiliares/f1.txt");
-        f2 = new File("./archivos/auxiliares/f2.txt");
-        f3 = new File("./archivos/auxiliares/f3.txt");
+        directorio = new File("./archivos/polifase/aux");
+        
+        f0 = new File("./archivos/polifase/aux/f0.txt");
+        f1 = new File("./archivos/polifase/aux/f1.txt");
+        f2 = new File("./archivos/polifase/aux/f2.txt");
+        f3 = new File("./archivos/polifase/aux/f3.txt");
+        
+        try {
+            pw = new PrintWriter(new File("./archivos/polifase/registro.txt"));
+        } catch (FileNotFoundException ex) {}
 
         if (f0.exists()) {
             f0.delete();
@@ -88,6 +102,13 @@ public class Polifase {
         while (op.leer(f1) != null && op.leer(f2) != null || op.leer(f0) != null && op.leer(f3) != null) {
             fase2();
         }
+        if(f0.length() == 0)
+            System.out.println("\nEl archivo quedó ordenado en f1");
+        else
+            System.out.println("\nEl archivo quedó ordenado en f0");
+        
+        pw.println("\nArchivo ordenado");
+        pw.close();
     }
 
     /**
@@ -105,7 +126,9 @@ public class Polifase {
     private void fase1() {
         List<String> elementos;
         List<Float> sub;
-        System.out.println("Fase 1...");
+        directorio.mkdir();
+        //System.out.println("Fase 1...");
+        pw.println("Fase 1...");
         elementos = op.dividir(op.leer(original), ",");
 
         while (!elementos.isEmpty()) {
@@ -130,7 +153,8 @@ public class Polifase {
                     ord = 1;
                     break;
             }
-            System.out.println(sub);
+            //System.out.println(sub);
+            pw.println(sub);
             if (contador % 2 == 0) {
                 op.escribir(f1, op.fToS(sub));
             } else {
@@ -144,8 +168,8 @@ public class Polifase {
      * Intercalación de archivos.
      */
     private void fase2() {
-        System.out.println("Fase 2...");
-        //System.out.println(pasada%2);
+        //System.out.println("Fase 2...");
+        pw.println("Fase 2...");
         if (pasada % 2 == 0) {
             if (ord == 1) {
                 mezclaAs(f1, f2, f0, f3);
@@ -168,7 +192,8 @@ public class Polifase {
 
     private void mezclaAs(File f1, File f2, File f0, File f3) {
         boolean bandera = false;
-        System.out.println("Mezcla...");
+        //System.out.println("Mezcla...");
+        pw.println("Mezcla...");
         List<String> archivo1 = op.dividir(op.leer(f1), "]");
         List<String> archivo2 = op.dividir(op.leer(f2), "]");
         List<Float> aux1, aux2;
@@ -187,10 +212,7 @@ public class Polifase {
             s1 = aux1.size();
             s2 = aux2.size();
             while (mezclada.size() != s1 + s2) {
-                //System.out.println("j= "+ j +", k= "+ k);
-                //System.out.println("aux1[j]= "+ aux1.get(j) + ", aux2[k]= "+ aux2.get(k));
                 if (j == s1 - 1 && k == s2 - 1) {
-                    //System.out.println("j= "+ j +", k= "+ k);
                     if (aux1.get(j) < aux2.get(k)) {
                         mezclada.add(aux1.get(j));
                         mezclada.add(aux2.get(k));
@@ -228,7 +250,8 @@ public class Polifase {
                     }
                 }
             }
-            System.out.println(mezclada);
+            //System.out.println(mezclada);
+            pw.println(mezclada);
             if (contador % 2 == 0) {
                 op.escribir(f0, op.fToS(mezclada));
                 bandera = true;
@@ -245,12 +268,15 @@ public class Polifase {
             } else {
                 op.escribir(f3, op.fToS(aux1));
             }
+            //System.out.println(aux1);
+            pw.println(aux1);
         }
     }
 
     private void mezclaDes(File f1, File f2, File f0, File f3) {
         boolean bandera = false;
-        System.out.println("Mezcla...");
+        //System.out.println("Mezcla...");
+        pw.println("Mezcla...");
         List<String> archivo1 = op.dividir(op.leer(f1), "]");
         List<String> archivo2 = op.dividir(op.leer(f2), "]");
         List<Float> aux1, aux2;
@@ -269,10 +295,7 @@ public class Polifase {
             s1 = aux1.size();
             s2 = aux2.size();
             while (mezclada.size() != s1 + s2) {
-                //System.out.println("j= "+ j +", k= "+ k);
-                //System.out.println("aux1[j]= "+ aux1.get(j) + ", aux2[k]= "+ aux2.get(k));
                 if (j == s1 - 1 && k == s2 - 1) {
-                    //System.out.println("j= "+ j +", k= "+ k);
                     if (aux1.get(j) > aux2.get(k)) {
                         mezclada.add(aux1.get(j));
                         mezclada.add(aux2.get(k));
@@ -310,7 +333,8 @@ public class Polifase {
                     }
                 }
             }
-            System.out.println(mezclada);
+            //System.out.println(mezclada);
+            pw.println(mezclada);
             if (contador % 2 == 0) {
                 op.escribir(f0, op.fToS(mezclada));
                 bandera = true;
