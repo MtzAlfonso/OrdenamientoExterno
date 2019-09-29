@@ -7,13 +7,15 @@ import ordenamientoExterno.*;
 /**
  * Contiene el código principal para que inicie el programa.
  *
- * @author Araiza Granados Alfredo<br>Fajardo Téllez Eduardo<br>Martínez Baeza
- * José Alfonso
+ * @author Alfredo Araiza Granados<br>Eduardo Fajardo Téllez<br>José Alfonso
+ * Martínez Baeza
+ *
  * @version 1.0
  * @since 23/septiembre/2019
  */
 public class Principal {
-/**
+
+    /**
      * Incluye el código para mostrar las instrucciones necesarias para mostrar
      * las opciones que el usuario tiene para utilizar correctamente el
      * programa.
@@ -63,5 +65,4 @@ public class Principal {
         } while (op != 4);
     }
 
-    
 }

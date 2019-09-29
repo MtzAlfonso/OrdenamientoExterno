@@ -5,9 +5,8 @@ import java.util.List;
 /**
  * Ordenamiento Merge Sort Ascendente.
  *
- * @author Araiza Granados Alfredo<br>Fajardo Téllez Eduardo<br>Martínez Baeza
- * José Alfonso
- * @version 1.0
+ * @author José Alfonso Martínez Baeza
+ * @version 2.0
  * @since 23/septiembre/2019
  */
 public class MergeSortDes {
@@ -17,7 +16,7 @@ public class MergeSortDes {
      * realizará de manera recursiva hasta que las sublistas tengan longitud
      * igual a 1. Necesita 4 parámetros.
      *
-     * @param arr Lista de valores a ordenar.
+     * @param arr Sublista a ordenar.
      * @param l Indice del primer elemento.
      * @param m Indice del elemento medio.
      * @param r Indice del último elemento.

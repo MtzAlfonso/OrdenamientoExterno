@@ -5,9 +5,8 @@ import java.util.List;
 /**
  * Ordenamiento Merge Sort Ascendente.
  *
- * @author Araiza Granados Alfredo<br>Fajardo Téllez Eduardo<br>Martínez Baeza
- * José Alfonso
- * @version 1.0
+ * @author José Alfonso Martínez Baeza
+ * @version 2.0
  * @since 23/septiembre/2019
  */
 public class MergeSortAs {
