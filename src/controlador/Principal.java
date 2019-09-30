@@ -10,8 +10,8 @@ import ordenamientoExterno.*;
  * @author Alfredo Araiza Granados<br>Eduardo Fajardo Téllez<br>José Alfonso
  * Martínez Baeza
  *
- * @version 1.0
- * @since 23/septiembre/2019
+ * @version 2.0.1
+ * @since 30/septiembre/2019
  */
 public class Principal {
 
@@ -54,6 +54,15 @@ public class Principal {
                     polifase.iniciar();
                     break;
                 case 2:
+                    System.out.println("\n** Mezcla Equilibrada **");
+                    System.out.println("Ingrese la ruta completa del archivo a ordenar: (/user/.../archivo.txt)");
+                    System.out.print("> ");
+                    MezclaEquilibrada mez = new MezclaEquilibrada(sc.next());
+                    System.out.println("\nTipo de ordenamiento:");
+                    System.out.println(" 1: Ascendente");
+                    System.out.println(" 2: Descendente");
+                    System.out.print("> ");
+                    mez.EjecucionME(sc.nextInt());
                     break;
                 case 3:
                     break;

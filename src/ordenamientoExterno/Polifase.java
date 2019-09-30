@@ -9,8 +9,8 @@ import java.util.*;
  * Ordenamiento por polifase.
  *
  * @author José Alfonso Martínez Baeza
- * @version 3.0.2
- * @since 28/septiembre/2019
+ * @version 3.0.4
+ * @since 30/septiembre/2019
  */
 public class Polifase {
 
@@ -69,29 +69,28 @@ public class Polifase {
         ord = 0;
 
         original = new File(ruta);
-        directorio = new File("./archivos/polifase/aux");
+        directorio = new File("./archivos");
+        directorio.mkdir();
+        directorio = new File("./archivos/polifase");
+        directorio.mkdir();
         
-        f0 = new File("./archivos/polifase/aux/f0.txt");
-        f1 = new File("./archivos/polifase/aux/f1.txt");
-        f2 = new File("./archivos/polifase/aux/f2.txt");
-        f3 = new File("./archivos/polifase/aux/f3.txt");
+        f0 = new File("./archivos/polifase/f0.txt");
+        f1 = new File("./archivos/polifase/f1.txt");
+        f2 = new File("./archivos/polifase/f2.txt");
+        f3 = new File("./archivos/polifase/f3.txt");
         
         try {
             pw = new PrintWriter(new File("./archivos/polifase/registro.txt"));
         } catch (FileNotFoundException ex) {}
 
-        if (f0.exists()) {
+        if (f0.exists())
             f0.delete();
-        }
-        if (f1.exists()) {
+        if (f1.exists())
             f1.delete();
-        }
-        if (f2.exists()) {
+        if (f2.exists())
             f2.delete();
-        }
-        if (f3.exists()) {
+        if (f3.exists())
             f3.delete();
-        }
     }
 
     /**
@@ -103,9 +102,9 @@ public class Polifase {
             fase2();
         }
         if(f0.length() == 0)
-            System.out.println("\nEl archivo quedó ordenado en f1");
+            System.out.println("\nEl archivo quedó ordenado en "+ f1.getPath());
         else
-            System.out.println("\nEl archivo quedó ordenado en f0");
+            System.out.println("\nEl archivo quedó ordenado en " + f0.getPath());
         
         pw.println("\nArchivo ordenado");
         pw.close();
@@ -126,7 +125,7 @@ public class Polifase {
     private void fase1() {
         List<String> elementos;
         List<Float> sub;
-        directorio.mkdir();
+        //directorio.mkdir();
         //System.out.println("Fase 1...");
         pw.println("Fase 1...");
         elementos = op.dividir(op.leer(original), ",");
